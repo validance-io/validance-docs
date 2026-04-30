@@ -29,7 +29,3 @@ mkdocs.yml     # site config (nav, theme, extensions)
 2. Add it to `nav:` in `mkdocs.yml`
 3. Open a PR — the workflow will build with `strict: true` (broken internal links fail the build)
 4. Merge to `main` — the site auto-deploys
-
-## License
-
-Documentation content © Validance. The site source (config, theme overrides) is MIT.
