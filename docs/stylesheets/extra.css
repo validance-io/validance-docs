@@ -1,0 +1,156 @@
+/* Validance brand palette overrides for Material theme.
+ *   Primary  #0F766E (teal 600)
+ *   Hover    #0D9488 (teal 500)
+ *   Accent   #14B8A6 (teal 400)
+ *   Bg-tint  #CCFBF1 (teal 100)
+ */
+
+[data-md-color-primary="custom"] {
+  --md-primary-fg-color:        #0F766E;
+  --md-primary-fg-color--light: #14B8A6;
+  --md-primary-fg-color--dark:  #0D9488;
+  --md-primary-bg-color:        #ffffff;
+  --md-primary-bg-color--light: #ffffff;
+}
+
+[data-md-color-accent="custom"] {
+  --md-accent-fg-color:             #0D9488;
+  --md-accent-fg-color--transparent: rgba(13, 148, 136, 0.1);
+  --md-accent-bg-color:             #ffffff;
+  --md-accent-bg-color--light:      #ffffff;
+}
+
+/* Anchor links pick up the brand teal in both light and dark schemes. */
+[data-md-color-scheme="default"] {
+  --md-typeset-a-color: #0F766E;
+}
+[data-md-color-scheme="slate"] {
+  --md-typeset-a-color: #14B8A6;
+}
+
+/* Body links — color alone is hard to spot at body-text size against black,
+ * so add a subtle underline as a second affordance. Thin + offset, not the
+ * heavy browser default. */
+.md-typeset a {
+  text-decoration: underline;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.2em;
+  text-decoration-color: var(--md-typeset-a-color);
+}
+
+.md-typeset a:hover {
+  text-decoration-thickness: 2px;
+}
+
+/* Keep headings clean — anchor permalinks (the ¶ pilcrow on hover) and
+ * heading-internal links shouldn't get underlined. */
+.md-typeset h1 a,
+.md-typeset h2 a,
+.md-typeset h3 a,
+.md-typeset h4 a,
+.md-typeset h5 a,
+.md-typeset h6 a,
+.md-typeset .headerlink {
+  text-decoration: none;
+}
+
+/* === Header wordmark =====================================================
+ * The logo SVG is now a wordmark (icon + "Validance" text). Hide the
+ * redundant text title that Material renders next to it, give the
+ * wordmark room to breathe, and keep the click target on the whole mark.
+ * ====================================================================== */
+
+/* Hide the duplicate site-name text — wordmark already says "Validance" */
+.md-header__title {
+  display: none;
+}
+
+/* Wordmark sizing — Material's default constrains logo height to ~1.2rem.
+ * Bump slightly so the text in the wordmark stays readable. */
+.md-header__button.md-logo img {
+  height: 1.6rem;
+  width: auto;
+}
+
+/* === Sidebar nav: clearer hierarchy ====================================
+ * By default, section labels (Concepts, Compliance) and leaf page links
+ * render with the same weight, which makes the nav read as a flat list.
+ * This gives sections an uppercase + smaller + muted treatment, and adds
+ * a soft left border to leaves to signal "child of this section".
+ * ====================================================================== */
+
+.md-nav--primary > .md-nav__list > .md-nav__item--nested > label.md-nav__link {
+  font-weight: 700;
+  color: var(--md-default-fg-color);
+  margin-top: 0.7rem;
+  font-size: 0.78rem;
+}
+
+/* Drawer title (the "Validance" at the top of the sidebar) — match the
+ * weight/size of section labels so all three (Validance, Concepts,
+ * Compliance) read as a consistent set of category titles. */
+.md-nav--primary > .md-nav__title {
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: var(--md-default-fg-color);
+}
+
+/* Right-side "Table of contents" header — same treatment as left-side
+ * category labels for visual consistency across both sidebars. */
+.md-nav--secondary > .md-nav__title {
+  font-weight: 700;
+  font-size: 0.78rem;
+  color: var(--md-default-fg-color);
+}
+
+/* Drop the chevron icon on top-level section labels — it suggests
+ * collapsibility but we want section headers to read as fixed labels. */
+.md-nav--primary > .md-nav__list > .md-nav__item--nested > label.md-nav__link .md-nav__icon {
+  display: none;
+}
+
+/* Indent + soft left border for the children of each top-level section. */
+.md-nav--primary > .md-nav__list > .md-nav__item--nested > nav.md-nav {
+  padding-left: 0.6rem;
+  margin-left: 0.4rem;
+  border-left: 2px solid var(--md-default-fg-color--lightest);
+}
+
+/* Top-level page links (Home, etc.) — same indent + left-border treatment
+ * as section children, so they visually nest under the "Validance" drawer
+ * title and read as a child of it. Without this, Home sits flat against
+ * the sidebar edge while Workflows/Tasks/etc. are indented — inconsistent. */
+.md-nav--primary > .md-nav__list > .md-nav__item:not(.md-nav__item--nested) {
+  padding-left: 0.6rem;
+  margin-left: 0.4rem;
+  border-left: 2px solid var(--md-default-fg-color--lightest);
+}
+
+/* Match the inner-text indent of section children's <a> — section children
+ * inherit extra padding from Material's nested nav level styling, which the
+ * top-level Home link doesn't get. Bumping the <a>'s own padding aligns
+ * Home's "H" with the "W" of Workflows etc. */
+.md-nav--primary > .md-nav__list > .md-nav__item:not(.md-nav__item--nested) > a.md-nav__link {
+  padding-left: 0.6rem;
+}
+
+/* Leaf page links — make them read as interactive. Default Material uses
+ * a lighter color than body text, which makes them feel washed out. Bump
+ * to full-strength color and medium weight (500). */
+.md-nav--primary a.md-nav__link {
+  color: var(--md-default-fg-color);
+  font-weight: 500;
+}
+
+/* Active-page link — bold + brand teal so the reader can locate
+ * themselves in the sidebar at a glance. */
+.md-nav--primary a.md-nav__link--active {
+  color: var(--md-primary-fg-color);
+  font-weight: 600;
+}
+
+/* Hover — subtle teal background pill (Material already does this, but
+ * intensify slightly for stronger affordance). */
+.md-nav--primary a.md-nav__link:hover {
+  color: var(--md-primary-fg-color);
+}

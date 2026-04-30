@@ -1,51 +1,88 @@
 site_name: Validance
 site_url: https://docs.validance.io
-site_description: Validance — workflow execution for regulated environments.
-site_author: Validance
+site_description: Workflow execution for regulated computational environments.
+copyright: Copyright &copy; 2026 Validance
 
 # Strict mode catches broken internal links at build time.
 strict: true
 
+# Avoid Validance reserved ports on this VM (443/5432/5433/7400/8000/8001/9100/18789).
+# Override per-invocation with: mkdocs serve --dev-addr 127.0.0.1:<port>
+dev_addr: 127.0.0.1:8080
+
 theme:
   name: material
+  logo: assets/branding/validance-wordmark-white.svg
+  favicon: assets/branding/favicon.ico
   palette:
     - media: "(prefers-color-scheme: light)"
       scheme: default
-      primary: black
-      accent: indigo
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-7
         name: Switch to dark mode
     - media: "(prefers-color-scheme: dark)"
       scheme: slate
-      primary: black
-      accent: indigo
+      primary: custom
+      accent: custom
       toggle:
         icon: material/brightness-4
         name: Switch to light mode
   features:
     - navigation.instant
     - navigation.tracking
+    - navigation.sections
+    - navigation.indexes
     - navigation.top
+    - search.suggest
+    - search.highlight
     - content.code.copy
+    - content.code.annotate
     - toc.follow
+  font:
+    text: Plus Jakarta Sans
+    code: JetBrains Mono
   icon:
     repo: fontawesome/brands/github
 
+extra_css:
+  - stylesheets/extra.css
+
 nav:
   - Home: index.md
+  - Concepts:
+      - Workflows: concepts/workflows.md
+      - Tasks: concepts/tasks.md
+      - Runs: concepts/runs.md
+      - Audit and evidence: concepts/audit-and-evidence.md
+  - Compliance:
+      - Regulatory mapping: compliance/regulatory-mapping.md
 
 markdown_extensions:
   - admonition
   - attr_list
+  - footnotes
   - md_in_html
   - tables
   - toc:
       permalink: true
       permalink_title: Anchor link
-  - pymdownx.superfences
   - pymdownx.details
+  - pymdownx.highlight:
+      anchor_linenums: true
+      line_spans: __span
+      pygments_lang_class: true
+  - pymdownx.inlinehilite
   - pymdownx.snippets
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.tasklist:
+      custom_checkbox: true
 
 extra:
   generator: false
+  social:
+    - icon: fontawesome/brands/github
+      link: https://github.com/validance-io
