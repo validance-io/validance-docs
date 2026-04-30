@@ -1,0 +1,15 @@
+# MkDocs build output
+site/
+
+# Python virtual environment
+.venv/
+__pycache__/
+*.pyc
+
+# Editor / OS
+.DS_Store
+.idea/
+.vscode/
+
+# Internal Claude Code guidance — never publish
+CLAUDE.md
