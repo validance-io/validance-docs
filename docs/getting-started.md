@@ -114,13 +114,13 @@ The run itself progresses through `pending` → `running` → `success` (or `fai
 
 ## Step 5: Wait for completion
 
-Poll the workflow status. This form is addressed by workflow *name* and returns the latest run, which is the one you just triggered:
+Poll the run record, addressed by the `workflow_hash` from Step 4:
 
 ```bash
-curl -s "$VALIDANCE_API_URL/api/workflows/hello.hashing/status"
+curl -s "$VALIDANCE_API_URL/api/runs/<workflow_hash>"
 ```
 
-Confirm the `workflow_hash` in the response matches the one from Step 4. (To pin a specific run explicitly, for example once you have several, append `?workflow_hash=<workflow_hash>`.) Once the workflow `status` reaches `success`, you have a completed run record including:
+(The run hash addresses everything in Validance: this record, the files, the logs, and the audit trail you will query next. If you only know the workflow's name, `GET /api/workflows/hello.hashing/status` returns its latest run.) Once the workflow `status` reaches `success`, you have a completed run record including:
 
 - `workflow_hash`, the run identifier
 - `workflow_name`
