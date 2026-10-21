@@ -139,7 +139,7 @@ One call returns every audit event of the run, merged in chronological order. Su
 curl -s "$VALIDANCE_API_URL/api/audit/<workflow_hash>"
 ```
 
-The response contains `entity_id`, `entity_type: "workflow"`, `aggregate: true`, `total_events`, and an `events` array holding every event in emission order. For this run the sequence reads:
+The response contains `entity_id`, `entity_type: "workflow"`, `aggregate: true`, `total_events`, and an `events` array: the run's story, compiled automatically at run time as each event happened. For this run the sequence reads:
 
 1. `file.uploaded`: your upload from Step 3, with its content hash in `details.file_hash`
 2. `workflow.started`
