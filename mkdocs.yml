@@ -51,6 +51,7 @@ extra_css:
 
 nav:
   - Home: index.md
+  - Getting started: getting-started.md
   - Concepts:
       - Workflows: concepts/workflows.md
       - Tasks: concepts/tasks.md
