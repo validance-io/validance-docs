@@ -118,7 +118,9 @@ GET /api/audit/{workflow_hash}
 
 Triggering the same workflow again creates a new, independent run with a new identifier. Previous runs are not affected.
 
-A run always uses the definition currently registered under the workflow's name. The API has no trigger-by-hash endpoint, so an earlier definition cannot be selected at trigger time; to run one again, register it again under a name you control. What each run does record is the `definition_hash` it executed, which is what establishes afterwards which definition produced which outcome.
+A run uses the revision currently active under the workflow's name, and the trigger call takes no `definition_hash`, so a revision cannot be selected for a single trigger. Running an earlier revision means making it active again, which is done by re-registering its definition under the same name: see [Running an earlier revision](workflows.md#running-an-earlier-revision).
+
+What every run records is the `definition_hash` it executed, which is what establishes afterwards which revision produced which outcome.
 
 ## See also
 

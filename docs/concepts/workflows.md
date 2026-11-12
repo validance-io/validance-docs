@@ -58,7 +58,23 @@ Returns the stored definition together with its `definition_hash`, `version`, `r
 
 ## Updating a workflow
 
-Registering the same name again stores a new revision with a new `definition_hash`. Previous runs remain associated with the definition hash they recorded at trigger time; the update does not affect them retroactively.
+Definitions are append-only. Registering the same name again with changed content stores a new revision with a new `definition_hash` and makes it the active one. Earlier revisions are never deleted, and previous runs stay associated with the hash they recorded at trigger time, so an update does not affect them retroactively.
+
+Registration keys on content, which gives it three outcomes:
+
+| Outcome | When |
+|---|---|
+| `unchanged` | The content is already the active revision. Nothing changes and nothing is recorded |
+| `versioned` | The content is new for this name. A new revision is created and becomes active |
+| `reactivated` | The content matches an earlier revision of this name. That revision becomes active again, with its original `definition_hash` and revision number |
+
+The name is part of the canonical form that the hash is computed over, so the same task graph registered under a different name is a different definition with a different hash, not a copy of the original.
+
+## Running an earlier revision
+
+Re-register that revision's definition under the same name. The hash is a function of the content, so registering the earlier JSON again reproduces its original `definition_hash`, reactivates that revision rather than creating a duplicate, and records the reactivation and the revision it superseded in the audit trail. Triggering by name then runs it.
+
+Reactivation moves the active pointer for that name, so it affects anything else triggering the same workflow. There is no way to run one revision for a single trigger while leaving the active pointer alone, which is the limitation to design around if two callers share a workflow name.
 
 ## Triggering a run
 
@@ -73,7 +89,7 @@ Content-Type: application/json
 
 Returns a run identifier. The run executes asynchronously. See [Runs](runs.md) for status, evidence, and querying.
 
-Triggering is by name, and a run uses the definition currently registered under that name. There is no trigger-by-hash endpoint today, so pinning execution to an older definition is not something the API offers: if you need to run an earlier definition, register it again under a name you control. The `definition_hash` recorded on each run is what lets you prove afterwards which definition ran.
+Triggering is by name, and a run uses the revision currently active under that name. The trigger call takes no `definition_hash`, so a revision cannot be selected for one trigger; to run an earlier one, make it active again as described under [Running an earlier revision](#running-an-earlier-revision). Every run records the `definition_hash` it executed, which is what proves afterwards which revision ran.
 
 ## See also
 
