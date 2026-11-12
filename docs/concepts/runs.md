@@ -22,7 +22,7 @@ Every run is associated with:
 - A unique run identifier
 - The workflow definition hash at the time of trigger
 - The engine version
-- The triggering user
+- The actor that triggered it
 - A start timestamp (UTC, microsecond precision)
 - The parameter values used
 

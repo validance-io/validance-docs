@@ -6,7 +6,7 @@ Validance is a workflow execution engine for regulated computational environment
 
 Every workflow run produces, automatically:
 
-- A run record: workflow definition hash, engine version, triggering user, timestamp, parameter values
+- A run record: workflow definition hash, engine version, actor, timestamp, parameter values
 - For every task: container image and image hash, command, input file content hashes, output file content hashes, exit code, timing, host
 - A complete input-step-output lineage retrievable by API
 - A tamper-evident audit trail with built-in verification

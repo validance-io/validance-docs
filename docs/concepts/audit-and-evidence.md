@@ -16,7 +16,7 @@ Each audit event includes:
 
 - Event type
 - The entity (workflow or task) the event refers to
-- The actor (the user or system that caused the event)
+- The actor that caused the event (a system identity today, not a named operator)
 - Timestamp in UTC, microsecond precision, fixed format
 - Event-specific details
 
