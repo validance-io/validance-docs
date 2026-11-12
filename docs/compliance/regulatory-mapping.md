@@ -36,7 +36,9 @@ Three sentences, three different owners.
 
 The third is Validance's. Audit records are persistent, retrievable as JSON by API, and independently verifiable, so they are available and convertible to a generally intelligible form, and they are structured for QA review and inspection response.
 
-The second is yours. Validance records that a change occurred and when, but it has no field for a reason, so a documented reason for a change or deletion of GMP-relevant data has to come from your own procedure. Nothing in Validance obstructs that; nothing in Validance captures it either.
+The second is yours, with one exception. For a change or deletion of data, and for a change to a workflow definition, Validance records that it happened and when, but has no field for why, so the documented reason has to come from your own procedure.
+
+The exception is an approval decision, which does carry a reason: resolving a gate accepts a free-text reason and stores it with the decision and its timestamp, and it is retrievable with the approval. Read it as a recorded rationale, not as attribution. The accompanying decider field is a string the caller supplies, and nothing authenticates it, so it records who the caller said decided rather than who did. See [Operator identity](#operator-identity).
 
 The first is yours as well: whether a given workflow's data is GMP-relevant, and what the risk assessment concludes, is an intended-use determination Validance cannot make for you.
 
@@ -48,7 +50,9 @@ The sentence QA readers most often expect to find under clause 9 is in clause 12
 
 Validance does not satisfy this today, and the gap is worth stating precisely rather than softening.
 
-Audit events carry an actor field, but its value is a system identity rather than a person: the engine sets it according to the entry path, so API-triggered work is attributed to the API, not to whoever called it. The API accepts no caller identity, and it enforces no authentication of its own, so there is no verified person for the field to hold.
+Audit events carry an actor field, but its value is a system identity rather than a person: the engine sets it according to the entry path, so API-triggered work is attributed to the API, not to whoever called it. Triggering a run accepts no caller identity at all.
+
+One surface is different, and it needs the sharper warning rather than the softer one. Resolving an approval accepts a decider, which is stored with the decision and appears in the audit trail. But it is a free string, nothing authenticates it, and it falls back to the literal `api` when omitted. Since the API enforces no authentication, an anonymous caller can resolve a gate and have the trail name whoever they typed. Treat that field as a claim recorded, never as attribution established: it is weaker than an empty field, because it reads like evidence.
 
 In practice: the *when*, the *what*, and the *on which data* of clause 12.4 are recorded. The *who* is recorded at system granularity only. If your intended use needs named-operator attribution inside the engine's own records, Validance is not sufficient for that on its own today. Either the system that fronts Validance has to hold that attribution, or it is carried as an open item in your validation. Verified operator identity is on the roadmap.
 
@@ -91,8 +95,8 @@ Validance produces the runtime substrate for compliance evidence. The following 
 - Per-workflow risk assessment and qualification
 - Authoring of validation documents (validation plans, qualification protocols, summary reports)
 - Electronic signatures, which stay in your quality system. Validance has no e-signature feature and no e-signature integration
-- Documented reasons for change or deletion of GMP-relevant data (Annex 11 §9)
-- Named-operator attribution, where your intended use requires it (Annex 11 §12.4)
+- Documented reasons for change or deletion of GMP-relevant data, and for changes to a workflow definition (Annex 11 §9). Approval decisions are the exception: those carry a reason
+- Named-operator attribution, where your intended use requires it (Annex 11 §12.4), including any control that would make a recorded approver verifiable rather than asserted
 - Periodic review, supplier qualification, training, business continuity
 - Classification of the workflow's intended use under the relevant predicate rule
 
