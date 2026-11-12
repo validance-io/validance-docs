@@ -4,10 +4,12 @@ A workflow in Validance is a JSON document describing a set of tasks, the depend
 
 ## What a workflow contains
 
-- A name (its identifier in the catalog)
+- A name, which is its identifier in the catalog
 - A version
+- An optional description
 - A list of tasks, each with its own definition (see [Tasks](tasks.md))
-- The dependency relationships between tasks
+
+Dependencies are not a separate structure. Each task names the tasks it waits on in its own `depends_on` field, and the graph is the union of those declarations.
 
 ## Authoring
 
@@ -20,7 +22,7 @@ Both produce the same artefact: a JSON workflow definition that you register wit
 
 ## Identity
 
-Every workflow has a `definition_hash`: a SHA-256 over the canonical JSON form of its definition. The hash is the workflow's identity — it changes if and only if the definition changes.
+Every registered workflow has a `definition_hash`: a SHA-256 over the canonical JSON form of its definition. The hash is the workflow's identity, and it changes if and only if the definition changes.
 
 This means:
 
@@ -29,7 +31,7 @@ This means:
 - "What ran on this date" is an exact, content-addressable answer
 - Change detection between two definitions reduces to hash comparison
 
-The hash is recorded with every run. Audit records reference the hash, not the workflow name, so the linkage from a recorded outcome back to the exact definition that produced it is unambiguous.
+Every run records the `definition_hash` of the definition that produced it, so the linkage from a recorded outcome back to the exact definition is unambiguous even after the workflow has been updated.
 
 ## Registering a workflow
 
@@ -46,14 +48,22 @@ Content-Type: application/json
 
 The engine validates the JSON against its schema and stores it. If validation fails the engine returns the validation errors and rejects the workflow. The response includes the assigned `definition_hash`.
 
+## Reading a definition back
+
+```http
+GET /api/workflows/{workflow_name}/definition
+```
+
+Returns the stored definition together with its `definition_hash`, `version`, `revision`, and registration metadata.
+
 ## Updating a workflow
 
-Updating a workflow registers a new version with a new hash. Previous runs remain associated with their original definition; the update does not affect them retroactively.
+Registering the same name again stores a new revision with a new `definition_hash`. Previous runs remain associated with the definition hash they recorded at trigger time; the update does not affect them retroactively.
 
 ## Triggering a run
 
 ```http
-POST /api/workflows/{name}/trigger
+POST /api/workflows/{workflow_name}/trigger
 Content-Type: application/json
 
 {
@@ -61,13 +71,9 @@ Content-Type: application/json
 }
 ```
 
-Returns a run identifier. The run executes asynchronously — see [Runs](runs.md) for status, evidence, and querying.
+Returns a run identifier. The run executes asynchronously. See [Runs](runs.md) for status, evidence, and querying.
 
-To pin a run to an exact prior version of a workflow, trigger by hash instead of by name:
-
-```http
-POST /api/workflows/by-hash/{definition_hash}/trigger
-```
+Triggering is by name, and a run uses the definition currently registered under that name. There is no trigger-by-hash endpoint today, so pinning execution to an older definition is not something the API offers: if you need to run an earlier definition, register it again under a name you control. The `definition_hash` recorded on each run is what lets you prove afterwards which definition ran.
 
 ## See also
 
