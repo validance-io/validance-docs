@@ -74,6 +74,8 @@ curl -X POST \
 
 The response includes a `definition_hash`: the SHA-256 of the canonical JSON of your workflow. The same JSON always produces the same hash; any change produces a different one. This hash is the workflow's identity, and it appears on every run record produced from this definition.
 
+It also includes an `action`, which is `created` the first time. Registering the identical JSON again reports `unchanged` and changes nothing; registering modified JSON under the same name reports `versioned` and creates a new revision. [Workflows](concepts/workflows.md#updating-a-workflow) has the full vocabulary.
+
 ## Step 3: Upload an input file
 
 ```bash
@@ -110,7 +112,7 @@ curl -X POST \
 
 The response includes a `workflow_hash` (16-char hex), a `session_hash`, and `status: "triggered"` confirming the run was accepted. The `workflow_hash` is the run identifier you will use for status and audit queries.
 
-The run itself progresses through `pending` → `running` → `success` (or `failed`) at the workflow level; individual task states are reported in upper case (`PENDING`, `RUNNING`, `SUCCESS`, `FAILED`) in the same response.
+The run itself progresses through `pending` → `running` → `success` (or `failed`) at the workflow level. The trigger response reports only that the run was accepted; the states appear on the run record you poll in Step 5, where the workflow status is lower case and the per-task states are upper case (`PENDING`, `RUNNING`, `SUCCESS`, `FAILED`). Compare status case-insensitively rather than against a literal.
 
 ## Step 5: Wait for completion
 
@@ -168,6 +170,7 @@ Each event is a complete record. Here is a real `task.completed` (because the wa
   "details": {
     "command": "sha256sum inputs/sample/sample.txt > hash.txt",
     "docker_image": "alpine:3.19",
+    "docker_image_digest": "sha256:6baf43584bcb78f2e5847d1de515f23499913ac9f12bdf834811a3145eb11ca1",
     "duration_seconds": 0.289,
     "exit_code": 0,
     "input_file_hashes": {
@@ -231,6 +234,7 @@ In the records above, all captured automatically:
 | Exact workflow definition | `definition_hash`: registration response (Step 2), status (Step 5) |
 | Exact run instance | `workflow_hash`: trigger response (Step 4), status (Step 5), audit (Step 6) |
 | Container image used | `docker_image`: status (Step 5), `task.completed` details (Step 6) |
+| Exact image that ran, by content | `docker_image_digest`: `task.completed` details (Step 6). A mutable tag such as `alpine:3.19` still resolves to exact bytes afterwards |
 | Exact input file by content | `file_hash`: upload response (Step 3), `file.uploaded` / `file.created` / `task.completed` details (Step 6) |
 | Where the input came from | `upload_hash`: upload response (Step 3); the upload event appears in the run record (Step 6) |
 | Exact output file by content | output `file_hash`: `file.created` / `task.completed` details (Step 6), file list (`GET /api/files/<workflow_hash>`) |
