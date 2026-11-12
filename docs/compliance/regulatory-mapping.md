@@ -74,7 +74,7 @@ For an orchestration engine in a regulated environment, the per-run forensic rec
 
 ## ALCOA+ mapping
 
-ALCOA and ALCOA+ are the data-integrity principles inspectors apply to electronic records. The current FDA, MHRA, WHO, and PIC/S guidance use this vocabulary.
+ALCOA and ALCOA+ are the data-integrity principles inspectors apply to electronic records. The FDA's data-integrity guidance uses this vocabulary, and the mapping below is against that guidance.
 
 | Principle | How Validance addresses it |
 |---|---|
@@ -111,11 +111,8 @@ The clauses mapped above are the pharma-side GMP and FDA records rules. If you a
 | Reference | Where to read it |
 |---|---|
 | 21 CFR Part 11 | [eCFR](https://www.ecfr.gov/current/title-21/chapter-I/subchapter-A/part-11) |
-| FDA Part 11 — Scope and Application (2003) | [FDA](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/part-11-electronic-records-electronic-signatures-scope-and-application) |
 | FDA Computer Software Assurance for Production and Quality Management System Software (February 2026) | [FDA](https://www.fda.gov/regulatory-information/search-fda-guidance-documents/computer-software-assurance-production-and-quality-system-software) |
 | FDA Data Integrity and Compliance With Drug CGMP — Q&A (2018) | [FDA](https://www.fda.gov/media/119267/download) |
 | EudraLex Volume 4, Annex 11 — Computerised Systems | [EU Health](https://health.ec.europa.eu/system/files/2016-11/annex11_01-2011_en_0.pdf) |
-| ICH Q9(R1) — Quality Risk Management | [ICH](https://www.ich.org) |
-| ISPE GAMP 5 (2nd Ed., July 2022) | [ISPE](https://ispe.org/publications/guidance-documents/gamp-5-guide-2nd-edition) |
 
-Quotations on this page are verbatim from the sources above. Annex 11 is written in "should" voice throughout, and is quoted that way here.
+Every source listed here is quoted or cited somewhere above; nothing is listed as general background. Quotations are verbatim from these sources. Annex 11 is written in "should" voice throughout and is quoted that way here.
